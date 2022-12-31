@@ -40,9 +40,13 @@ class Ad
     #[ORM\ManyToOne(inversedBy: 'ads')]
     private ?User $user = null;
 
+    #[ORM\OneToMany(mappedBy: 'ad', targetEntity: Discussion::class)]
+    private Collection $discussions;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
+        $this->discussions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -160,6 +164,36 @@ class Ad
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Discussion>
+     */
+    public function getDiscussions(): Collection
+    {
+        return $this->discussions;
+    }
+
+    public function addDiscussion(Discussion $discussion): self
+    {
+        if (!$this->discussions->contains($discussion)) {
+            $this->discussions->add($discussion);
+            $discussion->setAd($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDiscussion(Discussion $discussion): self
+    {
+        if ($this->discussions->removeElement($discussion)) {
+            // set the owning side to null (unless already changed)
+            if ($discussion->getAd() === $this) {
+                $discussion->setAd(null);
+            }
+        }
 
         return $this;
     }
