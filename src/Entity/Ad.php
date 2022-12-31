@@ -37,6 +37,9 @@ class Ad
     #[ORM\OneToMany(mappedBy: 'ad', targetEntity: Image::class)]
     private Collection $images;
 
+    #[ORM\ManyToOne(inversedBy: 'ads')]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -145,6 +148,18 @@ class Ad
                 $image->setAd(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
