@@ -22,7 +22,7 @@ class SecurityController extends AbstractController
     public function login(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $user = $this->userRepository->findOneBy(["email" => $data["username"]]);
+        $user = $this->userRepository->findOneBy(["email" => $data["email"]]);
         if(!$user) {
             return $this->json('error not user', 400);
         }
