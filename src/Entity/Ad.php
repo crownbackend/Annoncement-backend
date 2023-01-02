@@ -43,10 +43,14 @@ class Ad
     #[ORM\OneToMany(mappedBy: 'ad', targetEntity: Discussion::class)]
     private Collection $discussions;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $telephone = null;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
         $this->discussions = new ArrayCollection();
+        $this->disabled = true;
     }
 
     public function getId(): ?int
@@ -194,6 +198,18 @@ class Ad
                 $discussion->setAd(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(?string $telephone): self
+    {
+        $this->telephone = $telephone;
 
         return $this;
     }
