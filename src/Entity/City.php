@@ -22,6 +22,15 @@ class City
     #[ORM\ManyToOne(inversedBy: 'citys')]
     private ?Departement $departement = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $codeDepartment = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $lon = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $lat = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +68,42 @@ class City
     public function setDepartement(?Departement $departement): self
     {
         $this->departement = $departement;
+
+        return $this;
+    }
+
+    public function getCodeDepartment(): ?string
+    {
+        return $this->codeDepartment;
+    }
+
+    public function setCodeDepartment(string $codeDepartment): self
+    {
+        $this->codeDepartment = $codeDepartment;
+
+        return $this;
+    }
+
+    public function getLon(): ?string
+    {
+        return $this->lon;
+    }
+
+    public function setLon(string $lon): self
+    {
+        $this->lon = $lon;
+
+        return $this;
+    }
+
+    public function getLat(): ?string
+    {
+        return $this->lat;
+    }
+
+    public function setLat(string $lat): self
+    {
+        $this->lat = $lat;
 
         return $this;
     }
