@@ -34,10 +34,10 @@ class Ad
     #[ORM\ManyToOne(inversedBy: 'ads')]
     private ?Category $category = null;
 
-    #[ORM\OneToMany(mappedBy: 'ad', targetEntity: Image::class)]
+    #[ORM\OneToMany(mappedBy: 'ad', targetEntity: Image::class, cascade: ["persist"])]
     private Collection $images;
 
-    #[ORM\ManyToOne(inversedBy: 'ads')]
+    #[ORM\ManyToOne(cascade: ["persist"], inversedBy: 'ads')]
     private ?User $user = null;
 
     #[ORM\OneToMany(mappedBy: 'ad', targetEntity: Discussion::class)]
@@ -45,6 +45,9 @@ class Ad
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $telephone = null;
+
+    #[ORM\ManyToOne(inversedBy: 'ads')]
+    private ?City $city = null;
 
     public function __construct()
     {
@@ -210,6 +213,18 @@ class Ad
     public function setTelephone(?string $telephone): self
     {
         $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): self
+    {
+        $this->city = $city;
 
         return $this;
     }

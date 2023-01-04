@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Ad;
 use App\Entity\Category;
+use App\Entity\City;
 use App\Entity\Image;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -20,6 +21,9 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $faker = Faker\Factory::create('fr_FR');
+
+        $city1 = $manager->getRepository(City::class)->findOneBy(['id' => 23256]);
+        $city2 = $manager->getRepository(City::class)->findOneBy(['id' => 25954]);
 
         $user1 = new User();
         $user1->setEmail($faker->email);
@@ -51,36 +55,38 @@ class AppFixtures extends Fixture
         $category2->setName($faker->word);
         $manager->persist($category2);
 
-        for ($i = 0; $i < 500; $i++) {
+        for ($i = 0; $i < 967; $i++) {
             $ad = new Ad();
             $ad->setName($faker->sentence($nbWords = 6, $variableNbWords = true));
             $ad->setCreatedAt(\DateTimeImmutable::createFromMutable($faker->dateTime));
             $ad->setCategory($category1);
             $ad->setDescription($faker->paragraph(200, true));
-            $ad->setPrice($faker->randomFloat());
+            $ad->setPrice($faker->randomFloat(0, 10, 10000));
             $ad->setDisabled($faker->boolean());
             $ad->setTelephone($faker->phoneNumber);
             $image = new Image();
             $image->setName('https://picsum.photos/1000/700');
             $ad->addImage($image);
             $ad->setUser($user1);
+            $ad->setCity($city1);
 
             $manager->persist($ad);
         }
 
-        for ($i = 0; $i < 500; $i++) {
+        for ($i = 0; $i < 987; $i++) {
             $ad = new Ad();
             $ad->setName($faker->sentence($nbWords = 10, $variableNbWords = true));
             $ad->setCreatedAt(\DateTimeImmutable::createFromMutable($faker->dateTime));
             $ad->setCategory($category2);
             $ad->setDescription($faker->paragraph(200, true));
-            $ad->setPrice($faker->randomFloat());
+            $ad->setPrice($faker->randomFloat(0, 10, 10000));
             $ad->setDisabled($faker->boolean());
             $ad->setTelephone($faker->phoneNumber);
             $image = new Image();
             $image->setName('https://picsum.photos/1000/700');
             $ad->addImage($image);
             $ad->setUser($user2);
+            $ad->setCity($city2);
 
             $manager->persist($ad);
         }
