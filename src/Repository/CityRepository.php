@@ -46,11 +46,11 @@ class CityRepository extends ServiceEntityRepository
         if($request->query->get('name')) {
             return $query->where('c.name LIKE :name')
                 ->setParameter('name', '%'. $request->query->get('name') .'%')
-                ->getQuery()->setMaxResults(5)->getResult();
+                ->getQuery()->setMaxResults(10)->getResult();
         } elseif ($request->query->get('code_postale')) {
             return $query->where('c.codePostal LIKE :codePostale')
                 ->setParameter('codePostale', '%'. $request->query->get('code_postale') .'%')
-                ->getQuery()->setMaxResults(5)->getResult();
+                ->getQuery()->setMaxResults(10)->getResult();
         } else {
             return null;
         }

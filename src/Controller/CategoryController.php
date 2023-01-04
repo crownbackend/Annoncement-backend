@@ -19,8 +19,8 @@ class CategoryController extends AbstractController
     public function home(): JsonResponse
     {
         return $this->json([
-            'categories' => $this->categoryRepository->findCategoriesByAdsValid(),
-            'countAds' => count($this->adRepository->findBy(["disabled" => false]))
-        ], 200, [], ["categorySearch" => true]);
+            'categories' => $this->categoryRepository->findAll(),
+            'countAds' => $this->adRepository->findAdsCount()[0][1]
+        ], 200);
     }
 }

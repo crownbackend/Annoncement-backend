@@ -38,4 +38,14 @@ class AdRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function findAdsCount()
+    {
+        return $this->createQueryBuilder('a')
+            ->select('count(a.id)')
+            ->where('a.disabled = :disabled')
+            ->setParameter('disabled', false)
+            ->getQuery()->useQueryCache(true)
+            ->getScalarResult();
+    }
 }

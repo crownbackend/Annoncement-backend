@@ -21,10 +21,6 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
             'name' => $object->getName(),
         ];
 
-        if(isset($context['categorySearch'])) {
-            $data['categories'] = count($object->getAds());
-        }
-
         return $data;
     }
 

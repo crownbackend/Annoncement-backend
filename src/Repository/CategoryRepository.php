@@ -42,9 +42,7 @@ class CategoryRepository extends ServiceEntityRepository
     public function findCategoriesByAdsValid()
     {
         return $this->createQueryBuilder('c')
-            ->select('c', 'ads')
-            ->leftJoin('c.ads', 'ads')
-            ->where('ads.disabled = false')
-            ->getQuery()->getResult();
+            ->getQuery()->useQueryCache(true)
+            ->getResult();
     }
 }
