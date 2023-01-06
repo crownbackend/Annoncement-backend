@@ -24,7 +24,7 @@ class AdController extends AbstractController
         $form->submit($data);
         if($form->isSubmitted() && $form->isValid()) {
             $filters = $form->getData();
-            $this->adRepository->findAdsCountBySearch($filters);
+            return $this->json($this->adRepository->findAdsCountBySearch($filters)[0][1], 200);
         }
         return $this->json($form->getErrors(), 400);
     }

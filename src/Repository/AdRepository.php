@@ -52,10 +52,17 @@ class AdRepository extends ServiceEntityRepository
     public function findAdsCountBySearch(array $filters)
     {
 
-        $query = $this->createQueryBuilder('ad');
+        $query = $this->createQueryBuilder('ad')
+            ->select('count(ad.id)')
+            ->where("ad.disabled = :disabled")->setParameter("disabled", false);
         if($filters["category"]) {
             $query->andWhere('ad.category = :category')
             ->setParameter("category", $filters["category"]);
         }
+        if($filters["city"]) {
+            $query->andWhere('ad.city = :city')
+                ->setParameter("city", $filters["city"]);
+        }
+        return $query->getQuery()->useQueryCache(true)->getScalarResult();
     }
 }
