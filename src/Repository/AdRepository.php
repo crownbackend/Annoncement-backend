@@ -48,4 +48,14 @@ class AdRepository extends ServiceEntityRepository
             ->getQuery()->useQueryCache(true)
             ->getScalarResult();
     }
+
+    public function findAdsCountBySearch(array $filters)
+    {
+
+        $query = $this->createQueryBuilder('ad');
+        if($filters["category"]) {
+            $query->andWhere('ad.category = :category')
+            ->setParameter("category", $filters["category"]);
+        }
+    }
 }

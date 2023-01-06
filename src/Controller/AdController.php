@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\SearchAdsType;
 use App\Repository\AdRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,9 +16,16 @@ class AdController extends AbstractController
     {
     }
 
-    #[Route("/search/count", name: 'ad', methods: 'GET')]
+    #[Route("/search/count", name: 'ad', methods: 'POST')]
     public function home(Request $request): JsonResponse
     {
-        return $this->json('hey');
+        $form = $this->createForm(SearchAdsType::class);
+        $data = json_decode($request->getContent(), true);
+        $form->submit($data);
+        if($form->isSubmitted() && $form->isValid()) {
+            $filters = $form->getData();
+            $this->adRepository->findAdsCountBySearch($filters);
+        }
+        return $this->json($form->getErrors(), 400);
     }
 }
