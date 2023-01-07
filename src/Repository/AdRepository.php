@@ -63,6 +63,23 @@ class AdRepository extends ServiceEntityRepository
             $query->andWhere('ad.city = :city')
                 ->setParameter("city", $filters["city"]);
         }
-        return $query->getQuery()->useQueryCache(true)->getScalarResult();
+        if($filters["search"]) {
+            $query->andWhere('ad.name LIKE :search')
+                ->andWhere('ad.description LIKE :search')
+                ->setParameter('search', '%'. $filters["search"] .'%')
+            ;
+        }
+        if($filters["priceMin"] && $filters["priceMax"]) {
+            $query->andWhere('ad.price BETWEEN :min AND :max')
+                ->setParameter("min", $filters["priceMin"])
+                ->setParameter("max", $filters["priceMax"]);
+        } else if($filters['priceMax']) {
+            $query->andWhere("ad.price <= :price")
+                ->setParameter("price", $filters["priceMax"]);
+        } else if($filters["priceMin"]) {
+            $query->andWhere("ad.price >= :price")
+                ->setParameter("price", $filters["priceMin"]);
+        }
+        return $query->getQuery()->getScalarResult();
     }
 }
