@@ -50,7 +50,7 @@ class AdRepository extends ServiceEntityRepository
             ->getScalarResult();
     }
 
-    public function findAdsCountBySearch(array $filters, $rangeMin = 0, $rangeMax = 30)
+    public function findAdsCountBySearch(array $filters, $rangeMin = 0, $rangeMax = 50)
     {
         if(filter_var($filters['searchAds'], FILTER_VALIDATE_BOOLEAN)) {
             $query = $this->createQueryBuilder('ad')
@@ -60,6 +60,7 @@ class AdRepository extends ServiceEntityRepository
                 ->select('count(ad.id)')
                 ->where("ad.disabled = :disabled")->setParameter("disabled", false);
         }
+        $query->orderBy('ad.createdAt', 'DESC');
         if($filters["category"]) {
             $query->andWhere('ad.category = :category')
             ->setParameter("category", $filters["category"]);
