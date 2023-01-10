@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Ad;
 use App\Form\SearchAdsType;
 use App\Repository\AdRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route("/api/ad", name: 'ad_')]
@@ -40,5 +42,14 @@ class AdController extends AbstractController
             return $this->json($this->adRepository->findAdsCountBySearch($request->query->all()), 200);
         }
 
+    }
+
+    #[Route("/{id}", name: 'ad_show', methods: 'GET')]
+    public function show(Ad $ad): JsonResponse|NotFoundHttpException
+    {
+        if(!$ad) {
+            return $this->createNotFoundException('Erreur not found ad');
+        }
+        return $this->json($ad, 200);
     }
 }

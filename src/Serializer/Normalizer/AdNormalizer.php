@@ -22,6 +22,7 @@ class AdNormalizer implements NormalizerInterface, CacheableSupportsMethodInterf
             'id' => $object->getId(),
             'name' => $object->getName(),
             'price' => $object->getPrice(),
+            'description' => $object->getDescription(),
             'category' => [
                 'id' => $object->getCategory()->getId(),
                 'name' => $object->getCategory()->getName(),
