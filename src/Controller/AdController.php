@@ -39,7 +39,7 @@ class AdController extends AbstractController
             $ranges = explode("-", $range);
             return $this->json($this->adRepository->findAdsCountBySearch($request->query->all(), $ranges[0], $ranges[1]), 200);
         } else {
-            return $this->json($this->adRepository->findAdsCountBySearch($request->query->all()), 200);
+            return $this->json($this->adRepository->findAdsCountBySearch($request->query->all()), 200, [], ['searchAds' => true]);
         }
 
     }
@@ -50,6 +50,6 @@ class AdController extends AbstractController
         if(!$ad) {
             return $this->createNotFoundException('Erreur not found ad');
         }
-        return $this->json($ad, 200);
+        return $this->json($ad, 200, [], ["showAd" => true]);
     }
 }
