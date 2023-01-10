@@ -4,7 +4,6 @@ namespace App\Serializer\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use App\Entity\City;
 
 class CityNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface

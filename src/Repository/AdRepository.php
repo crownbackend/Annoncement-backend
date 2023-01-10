@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Ad;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -49,12 +50,16 @@ class AdRepository extends ServiceEntityRepository
             ->getScalarResult();
     }
 
-    public function findAdsCountBySearch(array $filters)
+    public function findAdsCountBySearch(array $filters, $rangeMin = 0, $rangeMax = 30)
     {
-
-        $query = $this->createQueryBuilder('ad')
-            ->select('count(ad.id)')
-            ->where("ad.disabled = :disabled")->setParameter("disabled", false);
+        if(filter_var($filters['searchAds'], FILTER_VALIDATE_BOOLEAN)) {
+            $query = $this->createQueryBuilder('ad')
+                ->where("ad.disabled = :disabled")->setParameter("disabled", false);
+        } else {
+            $query = $this->createQueryBuilder('ad')
+                ->select('count(ad.id)')
+                ->where("ad.disabled = :disabled")->setParameter("disabled", false);
+        }
         if($filters["category"]) {
             $query->andWhere('ad.category = :category')
             ->setParameter("category", $filters["category"]);
@@ -80,6 +85,12 @@ class AdRepository extends ServiceEntityRepository
             $query->andWhere("ad.price >= :price")
                 ->setParameter("price", $filters["priceMin"]);
         }
-        return $query->getQuery()->getScalarResult();
+        if(filter_var($filters['searchAds'], FILTER_VALIDATE_BOOLEAN)) {
+            $numberMaxPerPage = $rangeMax - $rangeMin;
+            $query->setFirstResult($rangeMin)->setMaxResults($numberMaxPerPage);
+            return new Paginator($query);
+        } else {
+            return $query->getQuery()->getScalarResult();
+        }
     }
 }

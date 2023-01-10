@@ -17,14 +17,25 @@ class SearchAdsType extends AbstractType
     {
         $builder
             ->add('category', EntityType::class, [
-                'class' => Category::class
+                'class' => Category::class,
+                'required' => false
             ])
             ->add('city', EntityType::class, [
-                'class' => City::class
+                'class' => City::class,
+                'required' => false
             ])
-            ->add('priceMin', NumberType::class)
-            ->add('priceMax', NumberType::class)
-            ->add('search', TextType::class)
+            ->add('priceMin', NumberType::class, [
+                'required' => false
+            ])
+            ->add('priceMax', NumberType::class, [
+                'required' => false
+            ])
+            ->add('search', TextType::class, [
+                'required' => false
+            ])
+            ->add('searchAds', null, [
+                'required' => false,
+            ])
         ;
     }
 
