@@ -26,10 +26,10 @@ class Message
     #[ORM\ManyToOne(inversedBy: 'messages')]
     private ?Discussion $discussion = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $senderId = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $receiverId = null;
 
     public function getId(): ?int
@@ -90,7 +90,7 @@ class Message
         return $this->senderId;
     }
 
-    public function setSenderId(int $senderId): self
+    public function setSenderId(?int $senderId): self
     {
         $this->senderId = $senderId;
 
@@ -102,7 +102,7 @@ class Message
         return $this->receiverId;
     }
 
-    public function setReceiverId(int $receiverId): self
+    public function setReceiverId(?int $receiverId): self
     {
         $this->receiverId = $receiverId;
 
