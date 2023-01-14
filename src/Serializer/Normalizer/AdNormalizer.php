@@ -23,7 +23,7 @@ class AdNormalizer implements NormalizerInterface, CacheableSupportsMethodInterf
             'name' => $object->getName(),
             'price' => $object->getPrice(),
             'createdAt' => $object->getCreatedAt()->format('c'),
-            'images' => $this->normalizeRelatedObjects($object->getImages())
+            'images' => $this->normalizeRelatedObjects($object->getImages()),
         ];
         if(isset($context["searchAds"])) {
             $data["category"] = [
@@ -38,6 +38,7 @@ class AdNormalizer implements NormalizerInterface, CacheableSupportsMethodInterf
         }
         if(isset($context["showAd"])) {
             $data['description'] = $object->getDescription();
+            $data['telephone'] = $object->getTelephone();
             $data["user"] = [
                 'id' => $object->getUser()->getId(),
                 'email' => $object->getUser()->getEmail(),
@@ -55,6 +56,13 @@ class AdNormalizer implements NormalizerInterface, CacheableSupportsMethodInterf
                 'codePostale' => $object->getCity()->getCodePostal(),
                 'lon' => $object->getCity()->getLon(),
                 'lat' => $object->getCity()->getLat(),
+            ];
+        }
+        if(isset($context["userAdsShow"])) {
+            $data["city"] = [
+                'id' => $object->getCity()->getId(),
+                'name' => $object->getCity()->getName(),
+                'codePostale' => $object->getCity()->getCodePostal()
             ];
         }
         return $data;

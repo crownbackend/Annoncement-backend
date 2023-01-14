@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Ad;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
@@ -93,5 +94,13 @@ class AdRepository extends ServiceEntityRepository
         } else {
             return $query->getQuery()->getScalarResult();
         }
+    }
+
+    public function findByUserAdsLastResult(User $user)
+    {
+        return $this->createQueryBuilder('a')
+            ->where("a.disabled = :disabled")->setParameter("disabled", false)
+            ->andWhere('a.user = :user')->setParameter('user', $user)
+            ->getQuery()->setMaxResults(4)->getResult();
     }
 }

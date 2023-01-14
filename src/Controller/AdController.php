@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Ad;
+use App\Entity\User;
 use App\Form\SearchAdsType;
 use App\Repository\AdRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -51,5 +52,15 @@ class AdController extends AbstractController
             return $this->createNotFoundException('Erreur not found ad');
         }
         return $this->json($ad, 200, [], ["showAd" => true]);
+    }
+
+    #[Route("/{id}/user", name: 'user_last_ad', methods: 'GET')]
+    public function adByUserLastForAds(User $user): JsonResponse|NotFoundHttpException
+    {
+        if(!$user) {
+            return $this->createNotFoundException('Erreur not found ad user');
+        }
+
+        return $this->json($this->adRepository->findByUserAdsLastResult($user), 200, [], ["userAdsShow" => true]);
     }
 }
