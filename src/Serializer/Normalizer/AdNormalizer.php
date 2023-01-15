@@ -44,7 +44,7 @@ class AdNormalizer implements NormalizerInterface, CacheableSupportsMethodInterf
                 'email' => $object->getUser()->getEmail(),
                 'firstName' => $object->getUser()->getFirstName(),
                 'lastName' => $object->getUser()->getLastName(),
-                'ads' => count($object->getUser()->getAds())
+                'ads' => $object->getUser()->getAds()->count()
             ];
             $data["category"] = [
                 'id' => $object->getCategory()->getId(),

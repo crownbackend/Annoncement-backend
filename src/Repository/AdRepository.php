@@ -99,6 +99,8 @@ class AdRepository extends ServiceEntityRepository
     public function findByUserAdsLastResult(User $user)
     {
         return $this->createQueryBuilder('a')
+            ->select('a', 'images')
+            ->leftJoin('a.images', 'images')
             ->where("a.disabled = :disabled")->setParameter("disabled", false)
             ->andWhere('a.user = :user')->setParameter('user', $user)
             ->getQuery()->setMaxResults(4)->getResult();
