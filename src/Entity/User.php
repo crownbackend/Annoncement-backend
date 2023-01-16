@@ -42,10 +42,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Ad::class)]
     private Collection $ads;
 
+    #[ORM\ManyToMany(targetEntity: Discussion::class, mappedBy: 'users')]
+    private Collection $discussions;
+
     public function __construct()
     {
         $this->ads = new ArrayCollection();
         $this->roles = ["ROLE_USER"];
+        $this->discussions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -179,6 +183,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($ad->getUser() === $this) {
                 $ad->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Discussion>
+     */
+    public function getDiscussions(): Collection
+    {
+        return $this->discussions;
+    }
+
+    public function addDiscussion(Discussion $discussion): self
+    {
+        if (!$this->discussions->contains($discussion)) {
+            $this->discussions->add($discussion);
+            $discussion->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDiscussion(Discussion $discussion): self
+    {
+        if ($this->discussions->removeElement($discussion)) {
+            $discussion->removeUser($this);
         }
 
         return $this;

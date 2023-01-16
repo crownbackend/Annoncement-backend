@@ -29,9 +29,6 @@ class Message
     #[ORM\Column(nullable: true)]
     private ?int $senderId = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $receiverId = null;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -93,18 +90,6 @@ class Message
     public function setSenderId(?int $senderId): self
     {
         $this->senderId = $senderId;
-
-        return $this;
-    }
-
-    public function getReceiverId(): ?int
-    {
-        return $this->receiverId;
-    }
-
-    public function setReceiverId(?int $receiverId): self
-    {
-        $this->receiverId = $receiverId;
 
         return $this;
     }

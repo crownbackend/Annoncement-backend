@@ -41,6 +41,8 @@ security:
          - { path: ^/api/login, roles: PUBLIC_ACCESS }
          - { path: ^/api/admin, roles: ROLE_ADMIN }
          - { path: ^/api/profile, roles: ROLE_USER }
+         - { path: ^/api/discussion, roles: ROLE_USER }
+         - { path: ^/api/message, roles: ROLE_USER }
 
 when@test:
     security:

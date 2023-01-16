@@ -24,9 +24,14 @@ class Discussion
     #[ORM\OneToMany(mappedBy: 'discussion', targetEntity: Message::class)]
     private Collection $messages;
 
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'discussions')]
+    private Collection $users;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
+        $this->users = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -84,6 +89,30 @@ class Discussion
                 $message->setDiscussion(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        $this->users->removeElement($user);
 
         return $this;
     }
