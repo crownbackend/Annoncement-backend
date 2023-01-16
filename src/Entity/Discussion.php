@@ -21,7 +21,7 @@ class Discussion
     #[ORM\ManyToOne(inversedBy: 'discussions')]
     private ?Ad $ad = null;
 
-    #[ORM\OneToMany(mappedBy: 'discussion', targetEntity: Message::class)]
+    #[ORM\OneToMany(mappedBy: 'discussion', targetEntity: Message::class, cascade: ["persist", "remove"])]
     private Collection $messages;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'discussions')]
