@@ -32,6 +32,7 @@ class SecurityController extends AbstractController
         }
         $token = $this->JWTTokenManager->create($user);
         $response = [
+            'id' => $user->getId(),
             'email' => $user->getEmail(),
             'token' => $token,
             'role' => $user->getRoles()
