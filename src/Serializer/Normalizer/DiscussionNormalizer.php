@@ -48,6 +48,7 @@ class DiscussionNormalizer implements NormalizerInterface, CacheableSupportsMeth
                 'id' => $message->getId(),
                 'content' => $message->getContent(),
                 'createdAt' => $message->getCreatedAt()->format('c'),
+                'readAt' => $message->getReadAt() ? $message->getReadAt()->format('c') : null,
                 'senderId' => $message->getSenderId()
             ];
         }

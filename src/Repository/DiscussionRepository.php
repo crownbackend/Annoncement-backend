@@ -46,6 +46,7 @@ class DiscussionRepository extends ServiceEntityRepository
             ->join('d.users', 'users')
             ->where('users.id = :userId')
             ->setParameter('userId', $user->getId())
+            ->orderBy('d.createdAt', 'DESC')
             ->getQuery()->getResult();
     }
 }

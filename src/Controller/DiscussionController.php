@@ -47,4 +47,12 @@ class DiscussionController extends AbstractController
 
         return $this->json($discussion->getCreatedAt(), 201);
     }
+
+    #[Route("/delete/{id}", name: 'delete', methods: 'DELETE')]
+    public function delete(Discussion $discussion): JsonResponse
+    {
+        $this->discussionRepository->remove($discussion, true);
+        return $this->json($this->discussionRepository->findDiscussionByUser($this->getUser()), 200, [],
+            ["myDiscussion" => true]);
+    }
 }
