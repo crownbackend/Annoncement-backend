@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Message;
+use App\Repository\DiscussionRepository;
 use App\Repository\MessageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -12,7 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route("/api/message", name: 'message_')]
 class MessageController extends AbstractController
 {
-    public function __construct(private MessageRepository $messageRepository)
+    public function __construct(private MessageRepository $messageRepository,
+                                private DiscussionRepository $discussionRepository)
     {
     }
 
@@ -29,10 +31,11 @@ class MessageController extends AbstractController
         $message = $this->messageRepository->findOneBy(["id" => $data["id"]]);
         if(!$message->getReadAt()) {
             $message->setReadAt(new \DateTimeImmutable());
-            $this->messageRepository->save($message);
-            return $this->json($message->getContent(), 201);
+            $this->messageRepository->save($message, true);
+            return $this->json($this->discussionRepository->findDiscussionByUser($this->getUser()), 200, [],
+                ["myDiscussion" => true]);
         } else {
-            return $this->json('message non lu', 201);
+            return $this->json('message lu', 201);
         }
 
     }
