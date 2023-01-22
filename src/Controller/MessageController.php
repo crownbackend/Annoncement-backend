@@ -35,7 +35,7 @@ class MessageController extends AbstractController
             return $this->json($this->discussionRepository->findDiscussionByUser($this->getUser()), 200, [],
                 ["myDiscussion" => true]);
         } else {
-            return $this->json('message lu', 201);
+            return $this->json('read', 200);
         }
 
     }
